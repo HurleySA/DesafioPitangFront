@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { Accordion } from './components/Accordion';
 import { Header } from './components/Header';
 import { Home } from './components/Home';
 import { api } from './services/api';
@@ -36,12 +37,20 @@ function App() {
       }
     }
 
+    const filterPassedTime = (time:Date) => {
+      const currentDate = new Date();
+      const selectedDate = new Date(time);
+  
+      return currentDate.getTime() < selectedDate.getTime();
+    };
+
   return (
     <div className="App">
       <GlobalStyle/>
       <Header/>
       <Home/>
-      <DatePicker selected={startDate} onChange={(date:Date) => setStartDate(date)} onBlur={postVaccineSchedule} />
+      <Accordion/>
+      <DatePicker selected={startDate} onChange={(date:Date) => setStartDate(date)} onBlur={postVaccineSchedule} minDate={new Date()} filterDate={filterPassedTime}/>
         {itens.map((item, index) => <li key={index}>
           {item.name}
         </li>)}

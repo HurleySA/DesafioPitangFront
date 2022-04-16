@@ -3,22 +3,23 @@ import styled from "styled-components";
 export const HeaderStyle = styled.section`
     width: 100%;
     box-shadow: 0 100px 1px rgba(0,0,0,.1);
-    background-color: #fafafa; 
+    background-color: #CA4F2F; 
     height: 100px;
 
     ul{
+        padding: 0 1rem;
         display: flex;
         justify-content: space-between;
     }
 
     li{
         display: flex;
-        justify-content: center;
         align-items: center;
         padding: 10px 0px;
     }
-    img{
-        height: 80px;
+    li img { 
+
+        width: 150px;
     }
     
     
@@ -26,10 +27,7 @@ export const HeaderStyle = styled.section`
 
 export const ButtonLogin =styled.div`
     display: flex;
-    width: 7rem;
-    justify-content: space-around;
     font-size: 1.2rem;
-    margin-right: 1rem;
     
     button{
         cursor: pointer;
@@ -38,9 +36,13 @@ export const ButtonLogin =styled.div`
         font-weight: 500;
         border: none;
         border-radius: .5rem;
-        background: #CA4F2F;
-        color: #fafafa;
+        color: #CA4F2F;
+        background-color: #fafafa;
         box-sizing: border-box;
+    }
+
+    button:first-child{
+        margin-right: 1rem;
     }
     
 `

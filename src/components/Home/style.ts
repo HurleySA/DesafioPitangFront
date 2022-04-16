@@ -1,40 +1,45 @@
 import styled from "styled-components";
 
 export const HomeStyle = styled.section`
-    background: rgb(202,79,47);
-    background: radial-gradient(circle, rgba(250,250,250,1) -300%, rgba(202,79,47,1) 70%, rgba(250,250,250,1) 300%);
+    background: #fafafa;
+    background: radial-gradient(circle, #CA4F2F -250%, #fafafa 70%, #CA4F2F 250%);
     width: 100%;
-    min-height: 600px;
+    min-height: 300px;
+    
 
 
 `
 
 export const Container = styled.section`
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     height: 600px;
-    padding: 2rem;
+
+
+    img{
+        min-width: 300px;
+    }
     
 `
 
 export const ButtonHome =styled.div`
     display: flex;
     flex-direction: column;
-    width: 12rem;
+    width: 10rem;
     justify-content: space-around;
     font-size: 1.2rem;
 
     
     button{
         cursor: pointer;
-        padding: 1rem 1rem;
+        padding: .5rem 1rem;
         font-size: 1rem;
         font-weight: 500;
         border: none;
         border-radius: .5rem;
-        background: #fafafa;
-        color: #CA4F2F;
+        color: #fafafa;
+        background: #CA4F2F;
         box-sizing: border-box;
         margin-bottom: .8rem;
     }
