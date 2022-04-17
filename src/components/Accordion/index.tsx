@@ -1,16 +1,23 @@
-import { useState } from "react";
+import { Accordion } from '@mantine/core';
 import styled from "styled-components";
 
 const Container = styled.div`
-    
-`
-const AccordionWrapper = styled.div<any>`
     display: flex;
     flex-direction: column;
     justify-content: center;
+    background: #fafafa;
+    padding: 4rem;
+    border-radius: .5rem;
+    box-shadow: -1px 1px 12px 0px rgba(0,0,0,0.54);
+    -webkit-box-shadow: -1px 1px 12px 0px rgba(0,0,0,0.54);
+    -moz-box-shadow: -1px 1px 12px 0px rgba(0,0,0,0.54);
+    
+`
+const AccordionWrapper = styled.section`
+   
     background: rgba(202,79,47,1);
     height: auto;
-    padding: 8rem 0rem;
+    padding: 5rem 0rem;
     text-align: center;
     transition: all 0.6s ease-in-out;
 
@@ -18,34 +25,34 @@ const AccordionWrapper = styled.div<any>`
         color: #fafafa;
         text-transform: uppercase;
         font-weight: 900;
-        margin: 0;
+        padding:  0rem 0rem 3rem 0;
         font-size: 2.25rem;
 
     }
 `;
 
-const InternalWrapper = styled.div<any>`
-    width: 100%;
-    max-height: ${(props) => (props.open ? '100px' : '0')};
-    font-size: .8rem;
-    transition: all 0.4s ease-in-out;
-    overflow: hidden;
-`;
-export const Accordion = ({ title, subTitle, btnText }: any) => {
-    const [ open, setOpen ] = useState(false);
-    const handleClick = () => {
-        setOpen(!open);
-    };
+export const Accordions = ({ title, subTitle, btnText }: any) => {
     return (
         <AccordionWrapper> 
             <h2>Perguntas Frequentes</h2>
             <Container className="container">
-                <button style={{background: 'yellow'}} onClick={handleClick}>
-                        Como posso agendar?
-                </button>
-                <InternalWrapper open={open}  className="container" >
-                    <h1>Basta clicar no link "pré-cadastro" para inserir seus dados, logo após, você encontrará o botão "agendar vacina" se houver oferta no momento, escolha o local e clique em agendar. Pronto, agora basta se dirigir ao ponto de vacinação.</h1>
-                </InternalWrapper>
+                <Accordion iconPosition="right">
+                    <Accordion.Item label="Como posso agendar?">
+                    Basta clicar no botão "agendar vacina" e informar seu nome, data de nascimento e data para vacinação. Se houver oferta no momento, basta se dirigir ao ponto de vacinação na data e horário solicitada.
+                    </Accordion.Item>
+
+                    <Accordion.Item label="Quais as regras de agendamento?">
+                        Sim. Atualmente estamos fazendo agendamento com limite máximo por dia e também por hora.
+                    </Accordion.Item>
+
+                    <Accordion.Item label="Qual o limite máximo por dia?">
+                        Limite por dia de até 20 pessoas.
+                    </Accordion.Item>
+
+                    <Accordion.Item label="Qual o limite máximo por hora?">
+                        Assumindo que não há ainda 20 agendamentos no dia, há um limite de 2 agendamentos por hora.
+                    </Accordion.Item>
+                </Accordion>
                 
             </Container>
             

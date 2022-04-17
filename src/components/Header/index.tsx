@@ -1,4 +1,4 @@
-import { ButtonLogin, HeaderStyle } from "./style"
+import { ButtonLogin, HeaderStyle } from "./style";
 
 export function Header(){
     return(
@@ -9,7 +9,7 @@ export function Header(){
                 </li>
                 <li>
                     <ButtonLogin>
-                        <button>Agendamentos</button> 
+                        <button>Agendamentos</button>
                         <button>Agendar</button>
                     </ButtonLogin>
                     

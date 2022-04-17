@@ -3,11 +3,8 @@
 import { useEffect, useState } from 'react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { Accordion } from './components/Accordion';
-import { Header } from './components/Header';
 import { Home } from './components/Home';
 import { api } from './services/api';
-import { GlobalStyle } from './style/global';
 function App() {
   const [itens, setItens] = useState([] as any[]);
   const [startDate, setStartDate] = useState(new Date());
@@ -46,10 +43,9 @@ function App() {
 
   return (
     <div className="App">
-      <GlobalStyle/>
-      <Header/>
+      
       <Home/>
-      <Accordion/>
+      
       <DatePicker selected={startDate} onChange={(date:Date) => setStartDate(date)} onBlur={postVaccineSchedule} minDate={new Date()} filterDate={filterPassedTime}/>
         {itens.map((item, index) => <li key={index}>
           {item.name}

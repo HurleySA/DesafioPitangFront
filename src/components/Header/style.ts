@@ -1,15 +1,16 @@
 import styled from "styled-components";
 
-export const HeaderStyle = styled.section`
+export const HeaderStyle = styled.header`
     width: 100%;
-    box-shadow: 0 100px 1px rgba(0,0,0,.1);
     background-color: #CA4F2F; 
     height: 100px;
+   
 
     ul{
         padding: 0 1rem;
         display: flex;
         justify-content: space-between;
+        
     }
 
     li{
