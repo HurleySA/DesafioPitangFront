@@ -19,7 +19,7 @@ export const HeaderStyle = styled.header`
         padding: 10px 0px;
     }
     li img { 
-
+        cursor: pointer;;
         width: 150px;
     }
     
