@@ -43,7 +43,8 @@ export const ContainerButtons = styled.div`
     padding: 1rem 0rem ;
     display: flex;
     width: 100%;
-    justify-content: space-evenly;
+    justify-content: left;
+    gap: 1rem;
 `
 export const Button = styled.button`
         display: flex;
@@ -67,7 +68,8 @@ export const Error = styled.div`
     background-color: #CA4F2F;
     color: #fafafa;
     padding: .2rem .5rem;
-    width: 70%;
+    width: 15rem;
+   
     border-radius: 0.5rem;
     
 `

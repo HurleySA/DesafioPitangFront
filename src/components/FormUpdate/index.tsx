@@ -32,6 +32,7 @@ interface MyFormValues {
 
 const today = new Date();
 today.setHours((today.getHours() - 3), today.getMinutes(), 0, 0)
+
 const SignupSchema = Yup.object().shape({
   name: Yup.string().required().min(5, "Must have more than 5 characteres."),
   born_date: Yup.date().nullable(true).max(today, "Cannot born in the future."),
@@ -86,6 +87,7 @@ export const FormUpdate: React.FC<{modalSchedule:ISchedule, getData: () => Promi
          validationSchema={SignupSchema}
          onSubmit={async (values, actions) => {
           try{
+            console.log(values);
             removeEmptyAttrs(values)
             await putVaccineSchedule(props.modalSchedule.id, values);
             await props.getData();
