@@ -45,5 +45,9 @@ export const ButtonHome =styled.div`
         padding: 1.5rem 3.5rem;
         box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.20);
     }
+
+    @media (max-width: 600px) {
+        padding: .5rem 1.5rem;
+        }
     
 `

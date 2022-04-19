@@ -46,4 +46,10 @@ export const TDButton = styled.button`
         box-sizing: border-box;
         padding: .5rem 1rem;
         box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.20);
+
+        @media (max-width: 600px) {
+            span {
+                display: none;
+            }
+        }
 `

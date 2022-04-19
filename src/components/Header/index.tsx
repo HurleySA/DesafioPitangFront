@@ -11,7 +11,7 @@ export function Header(){
                 </li>
                 <li>
                     <ButtonLogin>
-                        <button onClick={() => navigate("/create")}>Agendamentos</button>
+                        <button onClick={() => navigate("/list")}>Agendamentos</button>
                         <button onClick={() => navigate("/create")}>Agendar</button>
                     </ButtonLogin>
                     

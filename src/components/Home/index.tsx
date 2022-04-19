@@ -10,7 +10,7 @@ export function Home(){
              <Container className="container">
                 <img src="/vacina-logo.png" alt="Logo Vacina Pitang" />
                 <ButtonHome>
-                    <button onClick={() => navigate("/create")}>Listar Agendamentos</button>
+                    <button onClick={() => navigate("/list")}>Listar Agendamentos</button>
                     <button onClick={() => navigate("/create")}>Agendar Vacina</button>
                 </ButtonHome>
                 
