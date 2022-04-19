@@ -62,3 +62,12 @@ export const Button = styled.button`
         width: 6rem;
         box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.20);
 `
+
+export const Error = styled.div`
+    background-color: #CA4F2F;
+    color: #fafafa;
+    padding: .2rem .5rem;
+    width: 70%;
+    border-radius: 0.5rem;
+    
+`

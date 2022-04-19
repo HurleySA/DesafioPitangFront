@@ -6,6 +6,7 @@
     "@mantine/core": "^4.1.4",
     "@mantine/hooks": "^4.1.4",
     "@mantine/next": "^4.1.4",
+    "@mantine/notifications": "^4.1.4",
     "@mui/icons-material": "^5.6.1",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.0.1",

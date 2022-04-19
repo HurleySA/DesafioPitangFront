@@ -1,13 +1,15 @@
 
+import { showNotification } from "@mantine/notifications";
 import { addHours, subHours } from "date-fns";
 import { Field, Form, Formik } from "formik";
 import React from "react";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { toast } from "react-toastify";
 import * as Yup from 'yup';
 import { api } from "../../services/api";
-import { Button, ContainerButtons, ContainerForm } from "./style";
+import { Button, ContainerButtons, ContainerForm, Error } from "./style";
+
+
 
 interface ISchedule {
   id: string;
@@ -28,13 +30,14 @@ interface MyFormValues {
   conclusion: string;
 }
 
-
+const today = new Date();
+today.setHours((today.getHours() - 3), today.getMinutes(), 0, 0)
 const SignupSchema = Yup.object().shape({
-  name: Yup.string().nullable(true).min(5, "Must have more than 5 characteres."),
-  born_date: Yup.date().nullable(true),
-  vaccination_date: Yup.date().nullable(true),
+  name: Yup.string().required().min(5, "Must have more than 5 characteres."),
+  born_date: Yup.date().nullable(true).max(today, "Cannot born in the future."),
+  vaccination_date: Yup.date().nullable(true).min(today, "Cannot vaccinate in the past."),
   vaccinated: Yup.boolean().required(),
-  conclusion: Yup.string().when("vaccinated",{
+  conclusion: Yup.string().required().when("vaccinated",{
     is: true,
     then: Yup.string().required("Please write an conclusion.")
   })
@@ -51,10 +54,17 @@ const putVaccineSchedule = async (id: string, {name, born_date, vaccination_date
       vaccinated, 
       conclusion
     },config)
-  }catch(err){
-    if(err instanceof Error){
-      alert(err.message)
-    }
+  }catch(err:any){
+      showNotification({
+        title:"Erro:",
+        message: JSON.stringify(err.response.data.error),
+        styles: (theme) => ({
+          root: {
+            borderColor: "#CA4F2F",
+            '&::before': { backgroundColor: "#CA4F2F" },
+          },
+        })
+      })
   }
 }
 
@@ -64,33 +74,24 @@ const removeEmptyAttrs = (values: any) => {
       })
 }
 
-const notify = () => toast("Wow so easy !");
-
 
 export const FormUpdate: React.FC<{modalSchedule:ISchedule, getData: () => Promise<void>, setModalOpened: (value: React.SetStateAction<boolean>) => void}> = (props) =>{
-  let {vaccinated, conclusion } = props.modalSchedule;
+  let {name, vaccinated, conclusion } = props.modalSchedule;
   if(!vaccinated) conclusion = "Ainda não Vacinado";
-  const initialValues: MyFormValues = {name:undefined, born_date:undefined, vaccination_date:undefined, vaccinated, conclusion };
+  const initialValues: MyFormValues = {name, born_date:undefined, vaccination_date:undefined, vaccinated, conclusion };
    return (
      <div >
        <Formik
          initialValues={initialValues}
          validationSchema={SignupSchema}
          onSubmit={async (values, actions) => {
-       /*    if(values.name?.length < 5) values.name = initialValues.name;
-          if(!values.born_date) values.born_date = initialValues.born_date;
-          if(values.vaccination_date > new Date()) values.vaccinated = false;
-          if(!values.vaccination_date) values.vaccination_date = initialValues.vaccination_date;
-          */
-          
           try{
-            
             removeEmptyAttrs(values)
             await putVaccineSchedule(props.modalSchedule.id, values);
             await props.getData();
             props.setModalOpened(false)
           }catch(err ){
-            if(err instanceof Error) notify();
+            if(err instanceof Error) alert(err);
           }
           actions.setSubmitting(false);
          }}
@@ -102,8 +103,8 @@ export const FormUpdate: React.FC<{modalSchedule:ISchedule, getData: () => Promi
             <Form>
               
             <label htmlFor="name">Nome:</label>
-            <Field type="text" id="name" name="name" placeholder="Digite o novo nome (Opcional)"  />
-            {errors.name ? (<div>{errors.name}</div>
+            <Field type="text" id="name" name="name" placeholder="Digite o novo nome (Opcional)" />
+            {errors.name ? (<Error>{errors.name}</Error>
             ) : null }
   
             <label htmlFor="born_date">Data de Nascimento:</label>
@@ -115,18 +116,22 @@ export const FormUpdate: React.FC<{modalSchedule:ISchedule, getData: () => Promi
               name="born_date"
               onChange={(date:Date) => setFieldValue('born_date', date)}
               placeholderText="Digite uma nova data de Nascimento(Opcional)" />
+              {errors.born_date ? (<Error>{errors.born_date}</Error>
+            ) : null }
 
             <label htmlFor="vaccination_date">Data de Vacinação:</label>
             <ReactDatePicker 
-              selected={values.vaccination_date ? addHours(new Date(values.vaccination_date),new Date().getTimezoneOffset() / 60) : null }  // addHours(new Date(values.vaccination_date), new Date().getTimezoneOffset() / 60)
+              selected={values.vaccination_date ? addHours(new Date(values.vaccination_date),3) : null }  // addHours(new Date(values.vaccination_date), new Date().getTimezoneOffset() / 60)
               dateFormat="dd/MMMM/yyyy HH:mm:ss"
               className="form-control"
               timeFormat="HH:mm"
               minDate={new Date()}
               showTimeSelect
               name="vaccination_date"
-              onChange={(date:Date) => setFieldValue('vaccination_date', subHours(new Date(date),new Date(date).getTimezoneOffset() / 60))} 
+              onChange={(date:Date) => setFieldValue('vaccination_date', subHours(new Date(date),3))} 
               placeholderText="Digite uma nova data de Vacinação(Opcional)" />
+              {errors.vaccination_date ? (<Error>{errors.vaccination_date}</Error>
+            ) : null }
 
   <         label htmlFor="vaccinated">Vacinado</label>
             <Field type="checkbox" id="vaccinated" name="vaccinated" placeholder="Vacinação foi realizada?">
@@ -134,13 +139,13 @@ export const FormUpdate: React.FC<{modalSchedule:ISchedule, getData: () => Promi
             
             <label htmlFor="conclusion">Conclusão:</label>
             <Field type="text" id="conclusion" name="conclusion" placeholder="Informe uma nova conclusão" />
-            {errors.conclusion ? (<div>{errors.conclusion}</div>) : null}
+            {errors.conclusion ? (<Error>{errors.conclusion}</Error>) : null}
 
 
             
             <ContainerButtons>
               <Button onClick={handleReset}>Reset</Button> 
-              <Button type="submit" onClick={() => console.log(errors)}>Submit</Button> 
+              <Button type="submit" >Submit</Button> 
             </ContainerButtons>
               
             </Form>
