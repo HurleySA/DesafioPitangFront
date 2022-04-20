@@ -34,11 +34,11 @@ const today = new Date();
 today.setHours((today.getHours() - 3), today.getMinutes(), 0, 0)
 
 const SignupSchema = Yup.object().shape({
-  name: Yup.string().required().min(5, "Must have more than 5 characteres."),
+  name: Yup.string().nullable(true).min(5, "Must have more than 5 characteres."),
   born_date: Yup.date().nullable(true).max(today, "Cannot born in the future."),
   vaccination_date: Yup.date().nullable(true).min(today, "Cannot vaccinate in the past."),
   vaccinated: Yup.boolean().required(),
-  conclusion: Yup.string().required().when("vaccinated",{
+  conclusion: Yup.string().when("vaccinated",{
     is: true,
     then: Yup.string().required("Please write an conclusion.")
   })
@@ -46,7 +46,7 @@ const SignupSchema = Yup.object().shape({
 })
 
 const putVaccineSchedule = async (id: string, {name, born_date, vaccination_date, vaccinated, conclusion }: MyFormValues) => {
-  try{
+
     const config = { headers: {'Content-Type': 'application/json'} };
     await api.put(`/vaccineSchedule/${id}`,{
       name,
@@ -55,31 +55,28 @@ const putVaccineSchedule = async (id: string, {name, born_date, vaccination_date
       vaccinated, 
       conclusion
     },config)
-  }catch(err:any){
-      showNotification({
-        title:"Erro:",
-        message: JSON.stringify(err.response.data.error),
-        styles: (theme) => ({
-          root: {
-            borderColor: "#CA4F2F",
-            '&::before': { backgroundColor: "#CA4F2F" },
-          },
-        })
+    showNotification({
+      title:"Sucess:",
+      message: "Yeah! Atualização feita. ",
+      styles: (theme) => ({
+        root: {
+          borderColor: "#21e431",
+          '&::before': { backgroundColor: "#21e431" },
+        },
       })
-  }
+    }) 
 }
 
 const removeEmptyAttrs = (values: any) => {
   Object.keys(values).forEach(key => {
-    if(values[key] === undefined) delete values[key]
+    if(values[key] === undefined || values[key] === "") delete values[key]
       })
 }
 
-
 export const FormUpdate: React.FC<{modalSchedule:ISchedule, getData: () => Promise<void>, setModalOpened: (value: React.SetStateAction<boolean>) => void}> = (props) =>{
-  let {name, vaccinated, conclusion } = props.modalSchedule;
+  let {vaccinated, conclusion } = props.modalSchedule;
   if(!vaccinated) conclusion = "Ainda não Vacinado";
-  const initialValues: MyFormValues = {name, born_date:undefined, vaccination_date:undefined, vaccinated, conclusion };
+  const initialValues: MyFormValues = {name:undefined, born_date:undefined, vaccination_date:undefined, vaccinated, conclusion };
    return (
      <div >
        <Formik
@@ -87,13 +84,21 @@ export const FormUpdate: React.FC<{modalSchedule:ISchedule, getData: () => Promi
          validationSchema={SignupSchema}
          onSubmit={async (values, actions) => {
           try{
-            console.log(values);
             removeEmptyAttrs(values)
             await putVaccineSchedule(props.modalSchedule.id, values);
             await props.getData();
             props.setModalOpened(false)
-          }catch(err ){
-            if(err instanceof Error) alert(err);
+          }catch(err:any ){
+            showNotification({
+              title:"Error:",
+              message: JSON.stringify(err.response.data.error),
+              styles: (theme) => ({
+                root: {
+                  borderColor: "#CA4F2F",
+                  '&::before': { backgroundColor: "#CA4F2F" },
+                },
+              })
+            })
           }
           actions.setSubmitting(false);
          }}
@@ -136,8 +141,7 @@ export const FormUpdate: React.FC<{modalSchedule:ISchedule, getData: () => Promi
             ) : null }
 
   <         label htmlFor="vaccinated">Vacinado</label>
-            <Field type="checkbox" id="vaccinated" name="vaccinated" placeholder="Vacinação foi realizada?">
-            </Field>
+            <Field type="checkbox" id="vaccinated" name="vaccinated" placeholder="Vacinação foi realizada?"/>
             
             <label htmlFor="conclusion">Conclusão:</label>
             <Field type="text" id="conclusion" name="conclusion" placeholder="Informe uma nova conclusão" />
