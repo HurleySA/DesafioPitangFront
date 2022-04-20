@@ -6,6 +6,7 @@ export const Container = styled.section`
     background: radial-gradient(circle, #CA4F2F -250%, #fafafa 70%, #CA4F2F 250%);
     min-height: calc(100vh - 100px);
     background: rgba(0,0,0,0.1);
+    overflow-x: auto;
 
     table {
         

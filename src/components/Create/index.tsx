@@ -17,35 +17,30 @@ interface MyFormValues {
 const today = new Date();
 today.setHours((today.getHours() - 3), today.getMinutes(), 0, 0)
 
-
 const SignupSchema = Yup.object().shape({
-    name: Yup.string().required().min(5, "Must have more than 5 characteres."),
-    born_date: Yup.date().nullable(true).max(today, "Cannot born in the future."),
-    vaccination_date: Yup.date().nullable(true).min(today, "Cannot vaccinate in the past."),
+    name: Yup.string().required("Name is required.").min(5, "Must have more than 5 characteres."),
+    born_date: Yup.date().nullable(true).required("Born date is required.").max(today, "Cannot born in the future."),
+    vaccination_date: Yup.date().nullable(true).required("Vaccination date is required.").min(today, "Cannot vaccinate in the past."),
     
   })
 
   const postVaccineSchedule = async ({name, born_date, vaccination_date}: MyFormValues) => {
-    try{
       const config = { headers: {'Content-Type': 'application/json'} };
       await api.post(`/vaccineSchedule`,{
         name,
         born_date,
         vaccination_date,
       },config)
-      
-    }catch(err:any){
-        showNotification({
-          title:"Error:",
-          message: JSON.stringify(err.response.data.error),
-          styles: (theme) => ({
-            root: {
-              borderColor: "#CA4F2F",
-              '&::before': { backgroundColor: "#CA4F2F" },
-            },
-          })
+      showNotification({
+        title:"Sucess:",
+        message: "Yeah! Agendamento realizado.",
+        styles: (theme) => ({
+          root: {
+            borderColor: "#21e431",
+            '&::before': { backgroundColor: "#21e431" },
+          },
         })
-    }
+      })      
   }
 
 
@@ -60,11 +55,23 @@ export const Create= () => {
                 validationSchema={SignupSchema}
                 onSubmit={async (values, actions) => {
                     try{
+                        values.vaccination_date = (addHours(values.vaccination_date!, 3));
                         await postVaccineSchedule(values);
-                        navigate("/");
+                        values.vaccination_date = (subHours(values.vaccination_date!, 3));
+                        setTimeout(() => {navigate("/list")}, 1000);
                         localStorage.removeItem("schedules")
-                    }catch(err ){
-                        if(err instanceof Error) alert(err);
+                    }catch(err:any ){
+                      values.vaccination_date = (subHours(values.vaccination_date!, 3));
+                      showNotification({
+                        title:"Error:",
+                        message: JSON.stringify(err.response.data.error),
+                        styles: (theme) => ({
+                          root: {
+                            borderColor: "#CA4F2F",
+                            '&::before': { backgroundColor: "#CA4F2F" },
+                          },
+                        })
+                      })
                       }
                     actions.setSubmitting(false);
                 }}
@@ -73,7 +80,7 @@ export const Create= () => {
                 {({ errors, touched, setFieldValue, values, handleReset }) => (
                     <Form>
                         <label htmlFor="name">Nome:</label>
-                        <Field type="text" id="name" name="name" placeholder="Digite o novo nome (Opcional)" />
+                        <Field type="text" id="name" name="name" placeholder="Digite o nome" />
                         {errors.name ? (<Error>{errors.name}</Error>
                         ) : null }
             
@@ -85,7 +92,7 @@ export const Create= () => {
                         maxDate={new Date()}
                         name="born_date"
                         onChange={(date:Date) => setFieldValue('born_date', date)}
-                        placeholderText="Digite uma nova data de Nascimento(Opcional)" />
+                        placeholderText="Digite a data de Nascimento" />
                         {errors.born_date ? (<Error>{errors.born_date}</Error>
                         ) : null }
 
@@ -99,7 +106,7 @@ export const Create= () => {
                         showTimeSelect
                         name="vaccination_date"
                         onChange={(date:Date) => setFieldValue('vaccination_date', subHours(new Date(date),3))} 
-                        placeholderText="Digite uma nova data de Vacinação(Opcional)" />
+                        placeholderText="Digite a data de Vacinação" />
                         {errors.vaccination_date ? (<Error>{errors.vaccination_date}</Error>
                         ) : null }
                         <ContainerButtons>
