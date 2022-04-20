@@ -1,7 +1,7 @@
 import { Modal, Table } from "@mantine/core";
 import { addHours, format } from "date-fns";
 import { useCallback, useEffect, useState } from "react";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FormUpdate } from "../FormUpdate";
 import { Container, TDButton } from "./style";
 
@@ -57,6 +57,7 @@ export function Schedules(){
                         <th>Vacinado</th>
                         <th>Conclusão</th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -71,6 +72,10 @@ export function Schedules(){
                             setModalOpened(true)
                             setModalSchedule(schedule)
                         }}><span>Editar</span> <FaEdit/></TDButton></td>
+                        <td><TDButton onClick={() => {
+                            setModalOpened(true)
+                            setModalSchedule(schedule)
+                        }}><span>Apagar</span> <FaTrashAlt/></TDButton></td>
                         
                     </tr>))}
                     

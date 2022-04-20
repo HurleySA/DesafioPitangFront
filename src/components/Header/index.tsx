@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { ButtonLogin, HeaderStyle } from "./style";
 
-export function Header(){
+export const Header = () => {
     let navigate = useNavigate();
     return(
         <HeaderStyle>

@@ -48,6 +48,7 @@ const SignupSchema = Yup.object().shape({
 const putVaccineSchedule = async (id: string, {name, born_date, vaccination_date, vaccinated, conclusion }: MyFormValues) => {
 
     const config = { headers: {'Content-Type': 'application/json'} };
+    if(!vaccinated && !conclusion) conclusion = "Ainda não vacinado."
     await api.put(`/vaccineSchedule/${id}`,{
       name,
       born_date,

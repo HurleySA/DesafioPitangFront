@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Accordions } from "../Accordion";
 import { ButtonHome, Container, HomeStyle } from "./style";
 
-export function Home(){
+export const Home = () => {
     let navigate = useNavigate();
     return(
         <>
