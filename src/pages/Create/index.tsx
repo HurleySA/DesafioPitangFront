@@ -1,5 +1,5 @@
 
-import { FormCreate } from "../FormCreate/index.";
+import { FormCreate } from "../../components/FormCreate/index.";
 import { Container } from "./style";
 
 

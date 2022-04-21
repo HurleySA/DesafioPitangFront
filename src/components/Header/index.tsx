@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { ButtonLogin, HeaderStyle } from "./style";
+import { WhiteButton } from "../WhiteButton";
+import { ContainerButton, HeaderStyle } from "./style";
 
 export const Header = () => {
     let navigate = useNavigate();
@@ -10,10 +11,10 @@ export const Header = () => {
                     <img src="/vacina-logo-white.png" alt="Logo Vacina Pitang" onClick={() => navigate("/")}/>
                 </li>
                 <li>
-                    <ButtonLogin>
-                        <button onClick={() => navigate("/list")}>Agendamentos</button>
-                        <button onClick={() => navigate("/create")}>Agendar</button>
-                    </ButtonLogin>
+                    <ContainerButton>
+                        <WhiteButton style={{padding:"1rem 1.5rem"}} onClick={() => navigate("/list")}>Agendamentos</WhiteButton>
+                        <WhiteButton onClick={() => navigate("/create")}>Agendar</WhiteButton>
+                    </ContainerButton>
                     
                 </li>
             </ul>

@@ -3,10 +3,10 @@
 import "react-datepicker/dist/react-datepicker.css";
 import { Route, Routes } from 'react-router-dom';
 import { ToastContainer } from "react-toastify";
-import { Create } from "./components/Create";
 import { Header } from './components/Header';
-import { Home } from './components/Home';
-import { Schedules } from "./components/Schedules";
+import { Create } from "./pages/Create";
+import { Home } from './pages/Home';
+import { Schedules } from "./pages/Schedules";
 import { GlobalStyle } from './style/global';
 function App() {
   

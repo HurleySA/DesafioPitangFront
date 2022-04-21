@@ -7,7 +7,8 @@ import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import * as Yup from 'yup';
 import { api } from "../../services/api";
-import { Button, ContainerButtons, ContainerForm, Error } from "./style";
+import { OrangeButton } from "../OrangeButton";
+import { ContainerButtons, ContainerForm, Error } from "./style";
 
 
 
@@ -49,7 +50,7 @@ const putVaccineSchedule = async (id: string, {name, born_date, vaccination_date
 
     const config = { headers: {'Content-Type': 'application/json'} };
     if(!vaccinated && !conclusion) conclusion = "Ainda não vacinado."
-    await api.put(`/vaccineSchedule/${id}`,{
+    await api.put(`/${id}`,{
       name,
       born_date,
       vaccination_date,
@@ -105,7 +106,7 @@ export const FormUpdate: React.FC<{modalSchedule:ISchedule, getData: () => Promi
          }}
          
        >
-         {({ errors, touched, setFieldValue, values, handleReset }) => (
+         {({ errors, isSubmitting, setFieldValue, values, handleReset }) => (
            
            <ContainerForm>
             <Form>
@@ -151,8 +152,8 @@ export const FormUpdate: React.FC<{modalSchedule:ISchedule, getData: () => Promi
 
             
             <ContainerButtons>
-              <Button onClick={handleReset}>Reset</Button> 
-              <Button type="submit" >Submit</Button> 
+              <OrangeButton onClick={handleReset}>Reset</OrangeButton> 
+              <OrangeButton disabled={isSubmitting} type="submit" >Atualizar</OrangeButton> 
             </ContainerButtons>
               
             </Form>

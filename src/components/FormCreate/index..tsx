@@ -6,7 +6,8 @@ import ReactDatePicker from 'react-datepicker';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { api } from '../../services/api';
-import { Button, ContainerButtons, Error } from '../FormUpdate/style';
+import { ContainerButtons, Error } from '../FormUpdate/style';
+import { OrangeButton } from '../OrangeButton';
 import { Container } from './style';
 
 
@@ -30,7 +31,7 @@ const SignupSchema = Yup.object().shape({
 
   const postVaccineSchedule = async ({name, born_date, vaccination_date}: MyFormValues) => {
       const config = { headers: {'Content-Type': 'application/json'} };
-      await api.post(`/vaccineSchedule`,{
+      await api.post(`/`,{
         name,
         born_date,
         vaccination_date,
@@ -79,7 +80,7 @@ export const FormCreate = () => {
                 }}
                 
             >
-                {({ errors, touched, setFieldValue, values, handleReset }) => (
+                {({ errors, isSubmitting, setFieldValue, values, handleReset }) => (
                     <Form>
                         <label htmlFor="name">Nome:</label>
                         <Field type="text" id="name" name="name" placeholder="Digite o nome" />
@@ -112,8 +113,8 @@ export const FormCreate = () => {
                         {errors.vaccination_date ? (<Error>{errors.vaccination_date}</Error>
                         ) : null }
                         <ContainerButtons>
-                            <Button onClick={handleReset}>Reset</Button> 
-                            <Button type="submit" >Agendar</Button> 
+                            <OrangeButton onClick={handleReset}>Reset</OrangeButton> 
+                            <OrangeButton disabled={isSubmitting} type="submit" >Agendar</OrangeButton> 
                         </ContainerButtons>
 
                     </Form>
