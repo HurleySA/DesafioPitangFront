@@ -109,10 +109,10 @@ export const FormUpdate: React.FC<{modalSchedule:ISchedule, getData: () => Promi
          {({ errors, isSubmitting, setFieldValue, values, handleReset }) => (
            
            <ContainerForm>
-            <Form>
+            <Form autoComplete="off"> 
               
             <label htmlFor="name">Nome:</label>
-            <Field type="text" id="name" name="name" placeholder="Digite o novo nome (Opcional)" />
+            <Field type="text" id="name" name="name" placeholder="Digite o novo nome (Opcional)" autoComplete="off"/>
             {errors.name ? (<Error>{errors.name}</Error>
             ) : null }
   
@@ -124,6 +124,7 @@ export const FormUpdate: React.FC<{modalSchedule:ISchedule, getData: () => Promi
               maxDate={new Date()}
               name="born_date"
               onChange={(date:Date) => setFieldValue('born_date', date)}
+              autoComplete="off"
               placeholderText="Digite uma nova data de Nascimento(Opcional)" />
               {errors.born_date ? (<Error>{errors.born_date}</Error>
             ) : null }
@@ -136,6 +137,7 @@ export const FormUpdate: React.FC<{modalSchedule:ISchedule, getData: () => Promi
               timeFormat="HH:mm"
               minDate={new Date()}
               showTimeSelect
+              autoComplete="off"
               name="vaccination_date"
               onChange={(date:Date) => setFieldValue('vaccination_date', subHours(new Date(date),3))} 
               placeholderText="Digite uma nova data de Vacinação(Opcional)" />
@@ -143,10 +145,10 @@ export const FormUpdate: React.FC<{modalSchedule:ISchedule, getData: () => Promi
             ) : null }
 
   <         label htmlFor="vaccinated">Vacinado</label>
-            <Field type="checkbox" id="vaccinated" name="vaccinated" placeholder="Vacinação foi realizada?"/>
+            <Field type="checkbox" id="vaccinated" name="vaccinated" placeholder="Vacinação foi realizada?" autoComplete="off"/>
             
             <label htmlFor="conclusion">Conclusão:</label>
-            <Field type="text" id="conclusion" name="conclusion" placeholder="Informe uma nova conclusão" />
+            <Field type="text" id="conclusion" name="conclusion" placeholder="Informe uma nova conclusão" autoComplete="off"/>
             {errors.conclusion ? (<Error>{errors.conclusion}</Error>) : null}
 
 

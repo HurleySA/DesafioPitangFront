@@ -81,9 +81,9 @@ export const FormCreate = () => {
                 
             >
                 {({ errors, isSubmitting, setFieldValue, values, handleReset }) => (
-                    <Form>
+                    <Form autoComplete="off">
                         <label htmlFor="name">Nome:</label>
-                        <Field type="text" id="name" name="name" placeholder="Digite o nome" />
+                        <Field type="text" id="name" name="name" placeholder="Digite o nome" autoComplete="off"/>
                         {errors.name ? (<Error>{errors.name}</Error>
                         ) : null }
             
@@ -93,6 +93,7 @@ export const FormCreate = () => {
                         dateFormat="dd/MMMM/yyyy"
                         className="form-control"
                         maxDate={new Date()}
+                        autoComplete="off"
                         name="born_date"
                         onChange={(date:Date) => setFieldValue('born_date', date)}
                         placeholderText="Digite a data de Nascimento" />
@@ -107,6 +108,7 @@ export const FormCreate = () => {
                         timeFormat="HH:mm"
                         minDate={new Date()}
                         showTimeSelect
+                        autoComplete="off"
                         name="vaccination_date"
                         onChange={(date:Date) => setFieldValue('vaccination_date', subHours(new Date(date),3))} 
                         placeholderText="Digite a data de Vacinação" />

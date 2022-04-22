@@ -2,22 +2,22 @@ import { MantineProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { GlobalStyle } from './style/global';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <MantineProvider>
     <NotificationsProvider position='top-right'>
-      <BrowserRouter>
+      <MantineProvider>
+        <GlobalStyle/>
+        <ToastContainer/>
         <App/>
-      </BrowserRouter>
+      </MantineProvider>
     </NotificationsProvider>
-  </MantineProvider>
-  
 );
 
 // If you want to start measuring performance in your app, pass a function
