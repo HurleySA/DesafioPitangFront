@@ -1,5 +1,5 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import { WhiteButton } from "../WhiteButton";
+import { Button } from "../Button";
 import { ContainerButton, HeaderStyle } from "./style";
 
 export const Header = () => {
@@ -12,8 +12,8 @@ export const Header = () => {
                 </li>
                 <li>
                     <ContainerButton>
-                        <WhiteButton style={{padding:"1rem 1.5rem"}} onClick={() => navigate("/list")}>Agendamentos</WhiteButton>
-                        <WhiteButton onClick={() => navigate("/create")}>Agendar</WhiteButton>
+                        <Button theme="white" style={{padding:"1rem 1.5rem"}} onClick={() => navigate("/list")}>Agendamentos</Button>
+                        <Button theme="white" onClick={() => navigate("/create")}>Agendar</Button>
                     </ContainerButton>
                     
                 </li>

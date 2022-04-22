@@ -7,7 +7,7 @@ import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import * as Yup from 'yup';
 import { api } from "../../services/api";
-import { OrangeButton } from "../OrangeButton";
+import { Button } from "../Button";
 import { ContainerButtons, ContainerForm, Error } from "./style";
 
 
@@ -154,8 +154,8 @@ export const FormUpdate: React.FC<{modalSchedule:ISchedule, getData: () => Promi
 
             
             <ContainerButtons>
-              <OrangeButton onClick={handleReset}>Reset</OrangeButton> 
-              <OrangeButton disabled={isSubmitting} type="submit" >Atualizar</OrangeButton> 
+              <Button theme="orange" onClick={handleReset}>Reset</Button> 
+              <Button theme="orange" disabled={isSubmitting} type="submit" >Atualizar</Button> 
             </ContainerButtons>
               
             </Form>

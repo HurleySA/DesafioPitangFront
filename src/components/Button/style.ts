@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
-export const Button = styled.button`
+interface ButtonProps {
+        theme: "orange" | "white";
+}
+
+export const ButtonStyled = styled.button<ButtonProps>`
         display: flex;
         justify-content: space-around;
         align-items: center;
@@ -9,8 +13,12 @@ export const Button = styled.button`
         font-weight: 500;
         border: none;
         border-radius: .5rem;
-        color: #CA4F2F;
-        background-color: #fafafa;
+        color: ${(props) =>
+                props.theme === "orange" ?  "#fafafa": "#CA4F2F"
+        };;
+        background-color: ${(props) =>
+                props.theme === "orange" ?  "#CA4F2F" : "#fafafa"
+        };
         box-sizing: border-box;
         padding: .5rem 1rem;
         box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.20);

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
+import { Button } from "../../components/Button";
 import { ContainerButton } from "../../components/Header/style";
-import { WhiteButton } from "../../components/WhiteButton";
 import { Container, ContainerNotFound } from "./style";
 
 export const NotFound: React.FC = () => {
@@ -13,8 +13,8 @@ export const NotFound: React.FC = () => {
                 <p>Aqui está onde pode procurar a vacina que perdeu:</p>
 
                 <ContainerButton>
-                        <WhiteButton onClick={() => navigate("/list")}>Agendamentos</WhiteButton>
-                        <WhiteButton onClick={() => navigate("/create")}>Agendar</WhiteButton>
+                        <Button theme="white" onClick={() => navigate("/list")}>Agendamentos</Button>
+                        <Button theme="white" onClick={() => navigate("/create")}>Agendar</Button>
                     </ContainerButton>
             </ContainerNotFound>
         </Container>
