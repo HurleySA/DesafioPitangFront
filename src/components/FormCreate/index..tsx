@@ -6,8 +6,8 @@ import ReactDatePicker from 'react-datepicker';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { api } from '../../services/api';
+import { Button } from '../Button';
 import { ContainerButtons, Error } from '../FormUpdate/style';
-import { OrangeButton } from '../OrangeButton';
 import { Container } from './style';
 
 
@@ -115,8 +115,8 @@ export const FormCreate = () => {
                         {errors.vaccination_date ? (<Error>{errors.vaccination_date}</Error>
                         ) : null }
                         <ContainerButtons>
-                            <OrangeButton onClick={handleReset}>Reset</OrangeButton> 
-                            <OrangeButton disabled={isSubmitting} type="submit" >Agendar</OrangeButton> 
+                            <Button theme="orange" onClick={handleReset}>Reset</Button> 
+                            <Button theme="orange" disabled={isSubmitting} type="submit" >Agendar</Button> 
                         </ContainerButtons>
 
                     </Form>

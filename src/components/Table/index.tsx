@@ -4,8 +4,8 @@ import { addHours, format } from "date-fns";
 import { useCallback, useEffect, useState } from "react";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { api } from "../../services/api";
+import { Button } from "../Button";
 import { FormUpdate } from "../FormUpdate";
-import { OrangeButton } from "../OrangeButton";
 
 interface ISchedule {
     id: string;
@@ -91,17 +91,17 @@ export const ScheduleTable = () => {
                         <td>{schedule.vaccinated ? "Sim" : "Não"}</td>
                         <td>{schedule.vaccinated ? schedule.conclusion || "Paciente vacinado": "Ainda não vacinado"}</td>
                         <td>
-                            <OrangeButton onClick={() => {
+                            <Button theme="orange" onClick={() => {
                             setModalOpened(true)
                             setModalSchedule(schedule)
                         }}>
                                 <FaEdit/>
 
-                            </OrangeButton>
+                            </Button>
                         </td>
-                        <td><OrangeButton onClick={() => handleDelete(schedule.id)}>
+                        <td><Button theme="orange" onClick={() => handleDelete(schedule.id)}>
                                 <FaTrashAlt/>
-                            </OrangeButton></td>
+                            </Button></td>
                         
                     </tr>))}
                     
