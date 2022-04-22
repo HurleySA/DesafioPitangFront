@@ -7,7 +7,8 @@ import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import * as Yup from 'yup';
 import { api } from "../../services/api";
-import { Button, ContainerButtons, ContainerForm, Error } from "./style";
+import { OrangeButton } from "../OrangeButton";
+import { ContainerButtons, ContainerForm, Error } from "./style";
 
 
 
@@ -48,7 +49,8 @@ const SignupSchema = Yup.object().shape({
 const putVaccineSchedule = async (id: string, {name, born_date, vaccination_date, vaccinated, conclusion }: MyFormValues) => {
 
     const config = { headers: {'Content-Type': 'application/json'} };
-    await api.put(`/vaccineSchedule/${id}`,{
+    if(!vaccinated && !conclusion) conclusion = "Ainda não vacinado."
+    await api.put(`/${id}`,{
       name,
       born_date,
       vaccination_date,
@@ -58,7 +60,7 @@ const putVaccineSchedule = async (id: string, {name, born_date, vaccination_date
     showNotification({
       title:"Sucess:",
       message: "Yeah! Atualização feita. ",
-      styles: (theme) => ({
+      styles: () => ({
         root: {
           borderColor: "#21e431",
           '&::before': { backgroundColor: "#21e431" },
@@ -104,13 +106,13 @@ export const FormUpdate: React.FC<{modalSchedule:ISchedule, getData: () => Promi
          }}
          
        >
-         {({ errors, touched, setFieldValue, values, handleReset }) => (
+         {({ errors, isSubmitting, setFieldValue, values, handleReset }) => (
            
            <ContainerForm>
-            <Form>
+            <Form autoComplete="off"> 
               
             <label htmlFor="name">Nome:</label>
-            <Field type="text" id="name" name="name" placeholder="Digite o novo nome (Opcional)" />
+            <Field type="text" id="name" name="name" placeholder="Digite o novo nome (Opcional)" autoComplete="off"/>
             {errors.name ? (<Error>{errors.name}</Error>
             ) : null }
   
@@ -122,6 +124,7 @@ export const FormUpdate: React.FC<{modalSchedule:ISchedule, getData: () => Promi
               maxDate={new Date()}
               name="born_date"
               onChange={(date:Date) => setFieldValue('born_date', date)}
+              autoComplete="off"
               placeholderText="Digite uma nova data de Nascimento(Opcional)" />
               {errors.born_date ? (<Error>{errors.born_date}</Error>
             ) : null }
@@ -134,6 +137,7 @@ export const FormUpdate: React.FC<{modalSchedule:ISchedule, getData: () => Promi
               timeFormat="HH:mm"
               minDate={new Date()}
               showTimeSelect
+              autoComplete="off"
               name="vaccination_date"
               onChange={(date:Date) => setFieldValue('vaccination_date', subHours(new Date(date),3))} 
               placeholderText="Digite uma nova data de Vacinação(Opcional)" />
@@ -141,17 +145,17 @@ export const FormUpdate: React.FC<{modalSchedule:ISchedule, getData: () => Promi
             ) : null }
 
   <         label htmlFor="vaccinated">Vacinado</label>
-            <Field type="checkbox" id="vaccinated" name="vaccinated" placeholder="Vacinação foi realizada?"/>
+            <Field type="checkbox" id="vaccinated" name="vaccinated" placeholder="Vacinação foi realizada?" autoComplete="off"/>
             
             <label htmlFor="conclusion">Conclusão:</label>
-            <Field type="text" id="conclusion" name="conclusion" placeholder="Informe uma nova conclusão" />
+            <Field type="text" id="conclusion" name="conclusion" placeholder="Informe uma nova conclusão" autoComplete="off"/>
             {errors.conclusion ? (<Error>{errors.conclusion}</Error>) : null}
 
 
             
             <ContainerButtons>
-              <Button onClick={handleReset}>Reset</Button> 
-              <Button type="submit" >Submit</Button> 
+              <OrangeButton onClick={handleReset}>Reset</OrangeButton> 
+              <OrangeButton disabled={isSubmitting} type="submit" >Atualizar</OrangeButton> 
             </ContainerButtons>
               
             </Form>

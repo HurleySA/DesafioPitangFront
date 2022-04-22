@@ -1,3 +1,4 @@
+
 import { showNotification } from '@mantine/notifications';
 import { addHours, subHours } from 'date-fns';
 import { Field, Form, Formik } from 'formik';
@@ -5,14 +6,18 @@ import ReactDatePicker from 'react-datepicker';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { api } from '../../services/api';
-import { Button, ContainerButtons, Error } from '../FormUpdate/style';
-import { Container } from "./style";
+import { ContainerButtons, Error } from '../FormUpdate/style';
+import { OrangeButton } from '../OrangeButton';
+import { Container } from './style';
+
+
 
 interface MyFormValues {
     name: string;
     born_date?: Date;
     vaccination_date?: Date;
   }
+
 
 const today = new Date();
 today.setHours((today.getHours() - 3), today.getMinutes(), 0, 0)
@@ -26,7 +31,7 @@ const SignupSchema = Yup.object().shape({
 
   const postVaccineSchedule = async ({name, born_date, vaccination_date}: MyFormValues) => {
       const config = { headers: {'Content-Type': 'application/json'} };
-      await api.post(`/vaccineSchedule`,{
+      await api.post(`/`,{
         name,
         born_date,
         vaccination_date,
@@ -43,21 +48,19 @@ const SignupSchema = Yup.object().shape({
       })      
   }
 
-
-export const Create= () => {
+export const FormCreate = () => {
     let navigate = useNavigate()
     const initialValues:MyFormValues = {name: "", born_date:undefined, vaccination_date:undefined};
     return (
         <Container>
-            <div className='container'>
-            <Formik
+
+        
+        <Formik
                 initialValues={initialValues}
                 validationSchema={SignupSchema}
                 onSubmit={async (values, actions) => {
                     try{
-                        values.vaccination_date = (addHours(values.vaccination_date!, 3));
                         await postVaccineSchedule(values);
-                        values.vaccination_date = (subHours(values.vaccination_date!, 3));
                         setTimeout(() => {navigate("/list")}, 1000);
                         localStorage.removeItem("schedules")
                     }catch(err:any ){
@@ -77,10 +80,10 @@ export const Create= () => {
                 }}
                 
             >
-                {({ errors, touched, setFieldValue, values, handleReset }) => (
-                    <Form>
+                {({ errors, isSubmitting, setFieldValue, values, handleReset }) => (
+                    <Form autoComplete="off">
                         <label htmlFor="name">Nome:</label>
-                        <Field type="text" id="name" name="name" placeholder="Digite o nome" />
+                        <Field type="text" id="name" name="name" placeholder="Digite o nome" autoComplete="off"/>
                         {errors.name ? (<Error>{errors.name}</Error>
                         ) : null }
             
@@ -90,6 +93,7 @@ export const Create= () => {
                         dateFormat="dd/MMMM/yyyy"
                         className="form-control"
                         maxDate={new Date()}
+                        autoComplete="off"
                         name="born_date"
                         onChange={(date:Date) => setFieldValue('born_date', date)}
                         placeholderText="Digite a data de Nascimento" />
@@ -104,14 +108,15 @@ export const Create= () => {
                         timeFormat="HH:mm"
                         minDate={new Date()}
                         showTimeSelect
+                        autoComplete="off"
                         name="vaccination_date"
                         onChange={(date:Date) => setFieldValue('vaccination_date', subHours(new Date(date),3))} 
                         placeholderText="Digite a data de Vacinação" />
                         {errors.vaccination_date ? (<Error>{errors.vaccination_date}</Error>
                         ) : null }
                         <ContainerButtons>
-                            <Button onClick={handleReset}>Reset</Button> 
-                            <Button type="submit" >Agendar</Button> 
+                            <OrangeButton onClick={handleReset}>Reset</OrangeButton> 
+                            <OrangeButton disabled={isSubmitting} type="submit" >Agendar</OrangeButton> 
                         </ContainerButtons>
 
                     </Form>
@@ -120,7 +125,6 @@ export const Create= () => {
                 
                 
             </Formik>
-            </div>
-        </Container>
+            </Container>
     )
 }

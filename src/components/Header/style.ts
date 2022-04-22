@@ -26,24 +26,9 @@ export const HeaderStyle = styled.header`
     
 `
 
-export const ButtonLogin =styled.div`
+export const ContainerButton =styled.div`
     display: flex;
     font-size: 1.2rem;
-    
-    button{
-        cursor: pointer;
-        padding: 1rem 1rem;
-        font-size: 1rem;
-        font-weight: 500;
-        border: none;
-        border-radius: .5rem;
-        color: #CA4F2F;
-        background-color: #fafafa;
-        box-sizing: border-box;
-    }
-
-    button:first-child{
-        margin-right: 1rem;
-    }
+    gap: 1rem;
     
 `
