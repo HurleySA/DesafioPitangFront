@@ -60,7 +60,7 @@ const putVaccineSchedule = async (id: string, {name, born_date, vaccination_date
     showNotification({
       title:"Sucess:",
       message: "Yeah! Atualização feita. ",
-      styles: (theme) => ({
+      styles: () => ({
         root: {
           borderColor: "#21e431",
           '&::before': { backgroundColor: "#21e431" },
