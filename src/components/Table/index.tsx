@@ -3,19 +3,10 @@ import { showNotification } from "@mantine/notifications";
 import { addHours, format } from "date-fns";
 import { useCallback, useEffect, useState } from "react";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { ISchedule } from "../../helpers/dto";
 import { api } from "../../services/api";
 import { Button } from "../Button";
 import { FormUpdate } from "../FormUpdate";
-
-interface ISchedule {
-    id: string;
-    name: string;
-    born_date: Date;
-    vaccination_date: Date;
-    vaccinated: boolean;
-    conclusion: string;
-    created_at: Date;
-}
 
 export const ScheduleTable = () => {
     const [schedules, setSchedules] = useState<ISchedule[]>([]);
@@ -69,6 +60,10 @@ export const ScheduleTable = () => {
     const handleDelete = async (id: string) => {
         await deleteVaccineSchedule(id)
     }
+    const handleUpdate = async (schedule: ISchedule) => {
+        setModalOpened(true)
+        setModalSchedule(schedule)
+    }
     return (
         <Table className="container">
                 <thead>
@@ -91,12 +86,8 @@ export const ScheduleTable = () => {
                         <td>{schedule.vaccinated ? "Sim" : "Não"}</td>
                         <td>{schedule.vaccinated ? schedule.conclusion || "Paciente vacinado": "Ainda não vacinado"}</td>
                         <td>
-                            <Button theme="orange" onClick={() => {
-                            setModalOpened(true)
-                            setModalSchedule(schedule)
-                        }}>
+                            <Button theme="orange" onClick={() => handleUpdate(schedule)}>
                                 <FaEdit/>
-
                             </Button>
                         </td>
                         <td><Button theme="orange" onClick={() => handleDelete(schedule.id)}>
@@ -105,7 +96,6 @@ export const ScheduleTable = () => {
                         
                     </tr>))}
                     
-
                 </tbody>
                 <Modal
                         size={500}

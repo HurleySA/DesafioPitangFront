@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Accordions } from "../../components/Accordion";
+import { Accordion } from "../../components/Accordion";
 import { Button } from "../../components/Button";
 import { ButtonHome, Container, HomeStyle } from "./style";
 
@@ -16,7 +16,7 @@ export const Home = () => {
                 </ButtonHome>
                 
              </Container>
-             <Accordions/>
+             <Accordion/>
         </HomeStyle>
         
         </>

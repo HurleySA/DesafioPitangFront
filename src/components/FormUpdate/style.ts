@@ -1,5 +1,4 @@
 import styled from "styled-components";
-
 export const ContainerForm = styled.div`
     display: flex;
 
@@ -36,9 +35,6 @@ export const ContainerForm = styled.div`
         color: red;
     }
 `
-
-
-
 export const ContainerButtons = styled.div`
     padding: 1rem 0rem ;
     display: flex;
@@ -46,8 +42,6 @@ export const ContainerButtons = styled.div`
     justify-content: left;
     gap: 1rem;
 `
-
-
 export const Error = styled.div`
     background-color: #CA4F2F;
     color: #fafafa;

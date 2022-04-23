@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import React, { ReactNode } from 'react';
 import { ButtonStyled } from "./style";
 
 interface IProps {
@@ -7,7 +7,7 @@ interface IProps {
     [x:string]: any;
 }
 
-export const Button = ({children, theme,...rest}: IProps) => {
+export const Button: React.FC<IProps> = ({children, theme,...rest}) => {
     return (
         <ButtonStyled theme={theme} {...rest}> 
             {children}

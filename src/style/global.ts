@@ -29,5 +29,18 @@ export const GlobalStyle = createGlobalStyle`
         max-width: 76rem;
         margin: 0 auto;
     }
+    .react-datepicker__time-container   .react-datepicker__time  
+    .react-datepicker__time-box   ul.react-datepicker__time-list {  
+    flex-direction: column;
+    padding: 0; 
+    }
+
+    .react-datepicker__day{}
+
+    .react-datepicker__day--selected, .react-datepicker__day--selected:hover, .react-datepicker__day--keyboard-selected, li.react-datepicker__time-list-item--selected{
+        background-color: #CA4F2F !important;
+        color: #fafafa;
+    }
+    
 
 `
