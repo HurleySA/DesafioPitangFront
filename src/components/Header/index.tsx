@@ -2,7 +2,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { Button } from "../Button";
 import { ContainerButton, HeaderStyle } from "./style";
 
-export const Header = () => {
+export const Header: React.FC = () => {
     let navigate = useNavigate();
     return(
         <HeaderStyle>

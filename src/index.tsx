@@ -4,6 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { ToastContainer } from 'react-toastify';
 import App from './App';
+import { ContextStorage } from './contexts/SchedulesContext';
 import reportWebVitals from './reportWebVitals';
 import { GlobalStyle } from './style/global';
 
@@ -13,9 +14,11 @@ const root = ReactDOM.createRoot(
 root.render(
     <NotificationsProvider position='top-right'>
       <MantineProvider>
-        <GlobalStyle/>
-        <ToastContainer/>
-        <App/>
+        <ContextStorage>
+          <GlobalStyle/>
+          <ToastContainer/>
+          <App/>
+        </ContextStorage>
       </MantineProvider>
     </NotificationsProvider>
 );

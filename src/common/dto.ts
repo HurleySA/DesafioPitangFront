@@ -28,7 +28,6 @@ interface ButtonThemeProps {
 
 interface IFormUpdatePros {
     modalSchedule:ISchedule, 
-    getData: () => Promise<void>, 
     setModalOpened: (value: React.SetStateAction<boolean>) => void
   }
 

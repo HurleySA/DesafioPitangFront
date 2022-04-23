@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ButtonThemeProps } from "../../helpers/dto";
+import { ButtonThemeProps } from "../../common/dto";
 
 export const ButtonStyled = styled.button<ButtonThemeProps>`
         display: flex;
