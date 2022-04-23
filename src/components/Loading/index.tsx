@@ -3,6 +3,6 @@ import { customLoader } from './style';
 
 
 
-export function Loading() {
+export const Loading: React.FC = () => {
   return <LoadingOverlay loader={customLoader} visible />;
 }

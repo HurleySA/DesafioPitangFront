@@ -7,9 +7,9 @@ const UpdateSchema = Yup.object().shape({
     born_date: Yup.date().nullable(true).max(today, "Agendamento não disponivel para viajantes do tempo."),
     vaccination_date: Yup.date().nullable(true).min(today, "Agendamento não disponivel para viajantes do tempo."),
     vaccinated: Yup.boolean().required(),
-    conclusion: Yup.string().when("vaccinated",{
+    conclusion: Yup.string().max(0,"Paciente não vacinado.").when("vaccinated",{
       is: true,
-      then: Yup.string().required("Por favor escreva uma conclusão.")
+      then: Yup.string().max(100,"Limite de caracteres alcançado.").required("Por favor escreva uma conclusão.")
     })
     
   })

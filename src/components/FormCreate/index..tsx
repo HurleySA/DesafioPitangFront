@@ -1,12 +1,14 @@
 
 import { showNotification } from '@mantine/notifications';
 import { addHours, subHours } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { Field, Form, Formik } from 'formik';
+import { useContext } from 'react';
 import ReactDatePicker from 'react-datepicker';
 import { useNavigate } from 'react-router-dom';
-import { CreateFormValues } from '../../helpers/dto';
-import { postVaccineSchedule } from '../../helpers/request';
-import { CreateSchema } from '../../helpers/verification';
+import { CreateFormValues } from '../../common/dto';
+import { CreateSchema } from '../../common/verification';
+import { SchedulesContext } from '../../contexts/SchedulesContext';
 import { Button } from '../Button';
 import { ContainerButtons, Error } from '../FormUpdate/style';
 import { Loading } from '../Loading';
@@ -15,6 +17,8 @@ import { Container } from './style';
 export const FormCreate: React.FC = () => {
     let navigate = useNavigate()
     const initialValues:CreateFormValues = {name: "", born_date:undefined, vaccination_date:undefined};
+
+    const {postVaccineSchedule} = useContext(SchedulesContext);
     return (
         <Container>
         <Formik
@@ -24,7 +28,7 @@ export const FormCreate: React.FC = () => {
                     try{
                         await postVaccineSchedule(values);
                         setTimeout(() => {navigate("/list")}, 1000);
-                        localStorage.removeItem("schedules")
+
                     }catch(err:any ){
                       showNotification({
                         title:"Error:",
@@ -54,6 +58,7 @@ export const FormCreate: React.FC = () => {
                         className="form-control"
                         maxDate={new Date()}
                         autoComplete="off"
+                        locale={ptBR}
                         name="born_date"
                         onChange={(date:Date) => setFieldValue('born_date', date)}
                         placeholderText="Digite a data de Nascimento" />
@@ -68,6 +73,7 @@ export const FormCreate: React.FC = () => {
                           timeFormat="HH:mm"
                           minDate={new Date()}
                           showTimeSelect
+                          locale={ptBR}
                           autoComplete="off"
                           name="vaccination_date"
                           onChange={(date:Date) => date ? setFieldValue('vaccination_date', subHours(new Date(date),3)) : setFieldValue('vaccination_date', null)} 

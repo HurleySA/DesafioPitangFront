@@ -1,62 +1,18 @@
 import { Modal, Table } from "@mantine/core";
-import { showNotification } from "@mantine/notifications";
 import { addHours, format } from "date-fns";
-import { useCallback, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import { ISchedule } from "../../helpers/dto";
-import { api } from "../../services/api";
+import { ISchedule } from "../../common/dto";
+import { SchedulesContext } from "../../contexts/SchedulesContext";
 import { Button } from "../Button";
 import { FormUpdate } from "../FormUpdate";
+import { Container } from "./style";
 
-export const ScheduleTable = () => {
-    const [schedules, setSchedules] = useState<ISchedule[]>([]);
-
+export const ScheduleTable: React.FC = () => {
     const [modalSchedule, setModalSchedule] = useState<ISchedule>({} as ISchedule); 
     const [modalOpened, setModalOpened] = useState(false);
-    
 
-    const getData = useCallback(
-        async () => {
-          const data = await api.get("/");
-          const json = data.data;
-          localStorage.setItem("schedules",JSON.stringify(json))
-          setSchedules(json) 
-          
-        },
-        [],
-      )
-
-    useEffect(() => {
-        const updateList = async () => {
-            const localData = localStorage.getItem("schedules");
-            if(!localData){
-                await getData();
-            }else{
-                setSchedules(JSON.parse(localData));
-        }
-        }
-        updateList();
-        
-    },[getData])
-
-    
-
-    const deleteVaccineSchedule = async (id: string) => {
-        await api.delete(`/${id}`)
-        showNotification({
-          title:"Sucess:",
-          message: "Yeah! Agendamento deletado.",
-          styles: (theme) => ({
-            root: {
-              borderColor: "#21e431",
-              '&::before': { backgroundColor: "#21e431" },
-            },
-          })
-        }) 
-        localStorage.removeItem("schedules")
-        await getData();
-    }
-
+    const {deleteVaccineSchedule, schedules} = useContext(SchedulesContext);
     const handleDelete = async (id: string) => {
         await deleteVaccineSchedule(id)
     }
@@ -65,7 +21,8 @@ export const ScheduleTable = () => {
         setModalSchedule(schedule)
     }
     return (
-        <Table className="container">
+        <Container>
+            <Table className="container">
                 <thead>
                     <tr>
                         <th>Nome</th>
@@ -103,9 +60,11 @@ export const ScheduleTable = () => {
                         onClose={() => setModalOpened(false)}
                         title="Informe novos dados para atualização"
                 >
-                    <FormUpdate modalSchedule={modalSchedule} getData={getData} setModalOpened={setModalOpened}/>
+                    <FormUpdate modalSchedule={modalSchedule} setModalOpened={setModalOpened}/>
                 </Modal>
             </Table>
+        </Container>
+        
     )
 }
 

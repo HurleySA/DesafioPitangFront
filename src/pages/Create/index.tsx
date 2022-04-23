@@ -6,7 +6,7 @@ import { Container } from "./style";
 
 
 
-export const Create = () => {
+export const Create: React.FC = () => {
     
     return (
         <Container>

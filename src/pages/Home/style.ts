@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const HomeStyle = styled.section`
-    background: #fafafa;
-    background: radial-gradient(circle, #CA4F2F -250%, #fafafa 70%, #CA4F2F 250%);
+    background: var(--color-white);
+    background: radial-gradient(circle, var(--color-orange-400) -250%, var(--color-white) 70%, var(--color-orange-400) 250%);
     width: 100%;
     min-height: 300px;
 

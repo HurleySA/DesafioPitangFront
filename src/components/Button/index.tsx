@@ -1,13 +1,8 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
+import { IButtonProps } from '../../common/dto';
 import { ButtonStyled } from "./style";
 
-interface IProps {
-    children: ReactNode;
-    theme: "orange" | "white";
-    [x:string]: any;
-}
-
-export const Button: React.FC<IProps> = ({children, theme,...rest}) => {
+export const Button: React.FC<IButtonProps> = ({children, theme,...rest}) => {
     return (
         <ButtonStyled theme={theme} {...rest}> 
             {children}
