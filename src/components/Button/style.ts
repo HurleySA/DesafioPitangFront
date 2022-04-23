@@ -1,10 +1,7 @@
 import styled from "styled-components";
+import { ButtonThemeProps } from "../../helpers/dto";
 
-interface ButtonProps {
-        theme: "orange" | "white";
-}
-
-export const ButtonStyled = styled.button<ButtonProps>`
+export const ButtonStyled = styled.button<ButtonThemeProps>`
         display: flex;
         justify-content: space-around;
         align-items: center;

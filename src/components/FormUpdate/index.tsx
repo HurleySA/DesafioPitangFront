@@ -5,85 +5,26 @@ import { Field, Form, Formik } from "formik";
 import React from "react";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import * as Yup from 'yup';
-import { api } from "../../services/api";
+import { IFormUpdatePros, UpdateFormValues } from "../../helpers/dto";
+import { putVaccineSchedule } from "../../helpers/request";
+import { UpdateSchema } from "../../helpers/verification";
 import { Button } from "../Button";
+import { Loading } from "../Loading";
 import { ContainerButtons, ContainerForm, Error } from "./style";
-
-
-
-interface ISchedule {
-  id: string;
-  name: string;
-  born_date: Date;
-  vaccination_date: Date;
-  vaccinated: boolean;
-  conclusion: string;
-  created_at: Date;
-}
-
-
-interface MyFormValues {
-  name?: string;
-  born_date?: Date;
-  vaccination_date?: Date;
-  vaccinated: boolean;
-  conclusion: string;
-}
-
-const today = new Date();
-today.setHours((today.getHours() - 3), today.getMinutes(), 0, 0)
-
-const SignupSchema = Yup.object().shape({
-  name: Yup.string().nullable(true).min(5, "Must have more than 5 characteres."),
-  born_date: Yup.date().nullable(true).max(today, "Cannot born in the future."),
-  vaccination_date: Yup.date().nullable(true).min(today, "Cannot vaccinate in the past."),
-  vaccinated: Yup.boolean().required(),
-  conclusion: Yup.string().when("vaccinated",{
-    is: true,
-    then: Yup.string().required("Please write an conclusion.")
-  })
-  
-})
-
-const putVaccineSchedule = async (id: string, {name, born_date, vaccination_date, vaccinated, conclusion }: MyFormValues) => {
-
-    const config = { headers: {'Content-Type': 'application/json'} };
-    if(!vaccinated && !conclusion) conclusion = "Ainda não vacinado."
-    await api.put(`/${id}`,{
-      name,
-      born_date,
-      vaccination_date,
-      vaccinated, 
-      conclusion
-    },config)
-    showNotification({
-      title:"Sucess:",
-      message: "Yeah! Atualização feita. ",
-      styles: () => ({
-        root: {
-          borderColor: "#21e431",
-          '&::before': { backgroundColor: "#21e431" },
-        },
-      })
-    }) 
-}
 
 const removeEmptyAttrs = (values: any) => {
   Object.keys(values).forEach(key => {
     if(values[key] === undefined || values[key] === "") delete values[key]
       })
 }
-
-export const FormUpdate: React.FC<{modalSchedule:ISchedule, getData: () => Promise<void>, setModalOpened: (value: React.SetStateAction<boolean>) => void}> = (props) =>{
+export const FormUpdate: React.FC<IFormUpdatePros> = (props) =>{
   let {vaccinated, conclusion } = props.modalSchedule;
   if(!vaccinated) conclusion = "Ainda não Vacinado";
-  const initialValues: MyFormValues = {name:undefined, born_date:undefined, vaccination_date:undefined, vaccinated, conclusion };
+  const initialValues: UpdateFormValues = {name:undefined, born_date:undefined, vaccination_date:undefined, vaccinated, conclusion };
    return (
-     <div >
        <Formik
          initialValues={initialValues}
-         validationSchema={SignupSchema}
+         validationSchema={UpdateSchema}
          onSubmit={async (values, actions) => {
           try{
             removeEmptyAttrs(values)
@@ -107,10 +48,9 @@ export const FormUpdate: React.FC<{modalSchedule:ISchedule, getData: () => Promi
          
        >
          {({ errors, isSubmitting, setFieldValue, values, handleReset }) => (
-           
            <ContainerForm>
+
             <Form autoComplete="off"> 
-              
             <label htmlFor="name">Nome:</label>
             <Field type="text" id="name" name="name" placeholder="Digite o novo nome (Opcional)" autoComplete="off"/>
             {errors.name ? (<Error>{errors.name}</Error>
@@ -139,10 +79,11 @@ export const FormUpdate: React.FC<{modalSchedule:ISchedule, getData: () => Promi
               showTimeSelect
               autoComplete="off"
               name="vaccination_date"
-              onChange={(date:Date) => setFieldValue('vaccination_date', subHours(new Date(date),3))} 
+              onChange={(date:Date) => date ? setFieldValue('vaccination_date', subHours(new Date(date),3)) : setFieldValue('vaccination_date', null)} 
               placeholderText="Digite uma nova data de Vacinação(Opcional)" />
               {errors.vaccination_date ? (<Error>{errors.vaccination_date}</Error>
             ) : null }
+            
 
   <         label htmlFor="vaccinated">Vacinado</label>
             <Field type="checkbox" id="vaccinated" name="vaccinated" placeholder="Vacinação foi realizada?" autoComplete="off"/>
@@ -151,18 +92,15 @@ export const FormUpdate: React.FC<{modalSchedule:ISchedule, getData: () => Promi
             <Field type="text" id="conclusion" name="conclusion" placeholder="Informe uma nova conclusão" autoComplete="off"/>
             {errors.conclusion ? (<Error>{errors.conclusion}</Error>) : null}
 
-
-            
             <ContainerButtons>
               <Button theme="orange" onClick={handleReset}>Reset</Button> 
               <Button theme="orange" disabled={isSubmitting} type="submit" >Atualizar</Button> 
             </ContainerButtons>
+            {isSubmitting ? <Loading/>: null }
               
             </Form>
           </ContainerForm>
          )}
-         
        </Formik>
-     </div>
    );
 }

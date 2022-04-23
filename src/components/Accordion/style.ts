@@ -13,7 +13,6 @@ export  const Container = styled.div`
     
 `
 export const AccordionWrapper = styled.section`
-   
     background: rgba(202,79,47,1);
     height: auto;
     padding: 5rem 0rem;

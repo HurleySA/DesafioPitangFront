@@ -1,8 +1,7 @@
 import { Accordion as MantineAccordion } from '@mantine/core';
 import { AccordionWrapper, Container } from './style';
 
-
-export const Accordion = () => {
+export const Accordion: React.FC = () => {
     return (
         <AccordionWrapper> 
             <h2>Perguntas Frequentes</h2>
@@ -21,9 +20,7 @@ export const Accordion = () => {
                         Assumindo que não há ainda 20 agendamentos no dia, há um limite de 2 agendamentos por hora.
                     </MantineAccordion.Item>
                 </MantineAccordion>
-                
             </Container>
-            
         </AccordionWrapper>
     );
 };

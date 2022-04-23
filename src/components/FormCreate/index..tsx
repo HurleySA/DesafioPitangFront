@@ -4,67 +4,28 @@ import { addHours, subHours } from 'date-fns';
 import { Field, Form, Formik } from 'formik';
 import ReactDatePicker from 'react-datepicker';
 import { useNavigate } from 'react-router-dom';
-import * as Yup from 'yup';
-import { api } from '../../services/api';
+import { CreateFormValues } from '../../helpers/dto';
+import { postVaccineSchedule } from '../../helpers/request';
+import { CreateSchema } from '../../helpers/verification';
 import { Button } from '../Button';
 import { ContainerButtons, Error } from '../FormUpdate/style';
+import { Loading } from '../Loading';
 import { Container } from './style';
 
-
-
-interface MyFormValues {
-    name: string;
-    born_date?: Date;
-    vaccination_date?: Date;
-  }
-
-
-const today = new Date();
-today.setHours((today.getHours() - 3), today.getMinutes(), 0, 0)
-
-const SignupSchema = Yup.object().shape({
-    name: Yup.string().required("Name is required.").min(5, "Must have more than 5 characteres."),
-    born_date: Yup.date().nullable(true).required("Born date is required.").max(today, "Cannot born in the future."),
-    vaccination_date: Yup.date().nullable(true).required("Vaccination date is required.").min(today, "Cannot vaccinate in the past."),
-    
-  })
-
-  const postVaccineSchedule = async ({name, born_date, vaccination_date}: MyFormValues) => {
-      const config = { headers: {'Content-Type': 'application/json'} };
-      await api.post(`/`,{
-        name,
-        born_date,
-        vaccination_date,
-      },config)
-      showNotification({
-        title:"Sucess:",
-        message: "Yeah! Agendamento realizado.",
-        styles: (theme) => ({
-          root: {
-            borderColor: "#21e431",
-            '&::before': { backgroundColor: "#21e431" },
-          },
-        })
-      })      
-  }
-
-export const FormCreate = () => {
+export const FormCreate: React.FC = () => {
     let navigate = useNavigate()
-    const initialValues:MyFormValues = {name: "", born_date:undefined, vaccination_date:undefined};
+    const initialValues:CreateFormValues = {name: "", born_date:undefined, vaccination_date:undefined};
     return (
         <Container>
-
-        
         <Formik
                 initialValues={initialValues}
-                validationSchema={SignupSchema}
+                validationSchema={CreateSchema}
                 onSubmit={async (values, actions) => {
                     try{
                         await postVaccineSchedule(values);
                         setTimeout(() => {navigate("/list")}, 1000);
                         localStorage.removeItem("schedules")
                     }catch(err:any ){
-                      values.vaccination_date = (subHours(values.vaccination_date!, 3));
                       showNotification({
                         title:"Error:",
                         message: JSON.stringify(err.response.data.error),
@@ -78,7 +39,6 @@ export const FormCreate = () => {
                       }
                     actions.setSubmitting(false);
                 }}
-                
             >
                 {({ errors, isSubmitting, setFieldValue, values, handleReset }) => (
                     <Form autoComplete="off">
@@ -102,28 +62,26 @@ export const FormCreate = () => {
 
                         <label htmlFor="vaccination_date">Data de Vacinação:</label>
                         <ReactDatePicker 
-                        selected={values.vaccination_date ? addHours(new Date(values.vaccination_date),3) : null }  // addHours(new Date(values.vaccination_date), new Date().getTimezoneOffset() / 60)
-                        dateFormat="dd/MMMM/yyyy HH:mm:ss"
-                        className="form-control"
-                        timeFormat="HH:mm"
-                        minDate={new Date()}
-                        showTimeSelect
-                        autoComplete="off"
-                        name="vaccination_date"
-                        onChange={(date:Date) => setFieldValue('vaccination_date', subHours(new Date(date),3))} 
-                        placeholderText="Digite a data de Vacinação" />
-                        {errors.vaccination_date ? (<Error>{errors.vaccination_date}</Error>
+                          selected={values.vaccination_date ? addHours(new Date(values.vaccination_date),3) : null }  // addHours(new Date(values.vaccination_date), new Date().getTimezoneOffset() / 60)
+                          dateFormat="dd/MMMM/yyyy HH:mm:ss"
+                          className="form-control"
+                          timeFormat="HH:mm"
+                          minDate={new Date()}
+                          showTimeSelect
+                          autoComplete="off"
+                          name="vaccination_date"
+                          onChange={(date:Date) => date ? setFieldValue('vaccination_date', subHours(new Date(date),3)) : setFieldValue('vaccination_date', null)} 
+                          placeholderText="Digite uma nova data de Vacinação(Opcional)" />
+                          {errors.vaccination_date ? (<Error>{errors.vaccination_date}</Error>
                         ) : null }
+
                         <ContainerButtons>
                             <Button theme="orange" onClick={handleReset}>Reset</Button> 
                             <Button theme="orange" disabled={isSubmitting} type="submit" >Agendar</Button> 
                         </ContainerButtons>
-
+                        {isSubmitting ? <Loading/>: null }
                     </Form>
-                    
                 )}
-                
-                
             </Formik>
             </Container>
     )
