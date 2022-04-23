@@ -6,6 +6,7 @@ import { ISchedule } from "../../common/dto";
 import { SchedulesContext } from "../../contexts/SchedulesContext";
 import { Button } from "../Button";
 import { FormUpdate } from "../FormUpdate";
+import { Container } from "./style";
 
 export const ScheduleTable: React.FC = () => {
     const [modalSchedule, setModalSchedule] = useState<ISchedule>({} as ISchedule); 
@@ -20,7 +21,8 @@ export const ScheduleTable: React.FC = () => {
         setModalSchedule(schedule)
     }
     return (
-        <Table className="container">
+        <Container>
+            <Table className="container">
                 <thead>
                     <tr>
                         <th>Nome</th>
@@ -61,6 +63,8 @@ export const ScheduleTable: React.FC = () => {
                     <FormUpdate modalSchedule={modalSchedule} setModalOpened={setModalOpened}/>
                 </Modal>
             </Table>
+        </Container>
+        
     )
 }
 

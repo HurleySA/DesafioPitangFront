@@ -18,5 +18,5 @@ export const ButtonStyled = styled.button<ButtonThemeProps>`
         };
         box-sizing: border-box;
         padding: .5rem 1rem;
-        box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.20);
+        box-shadow: 0px 5px 10px 0px var(--color-gray-400);
 `

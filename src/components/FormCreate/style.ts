@@ -14,11 +14,11 @@ export const Container = styled.div`
     }
 
     input{
-        color:#000000;
+        color:var(--color-black);
         margin: 0 1rem;
         border: none;
         width: 90%;
-        border-bottom: 1px solid #CA4F2F;
+        border-bottom: 1px solid var(--color-orange-400);
         font-size: 1rem;
         font-weight: 500;
         margin: .5rem 0;
