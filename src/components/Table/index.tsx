@@ -105,7 +105,6 @@ export const ScheduleTable = () => {
                         
                     </tr>))}
                     
-
                 </tbody>
                 <Modal
                         size={500}
