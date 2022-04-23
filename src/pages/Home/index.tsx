@@ -3,7 +3,7 @@ import { Accordion } from "../../components/Accordion";
 import { Button } from "../../components/Button";
 import { ButtonHome, Container, HomeStyle } from "./style";
 
-export const Home = () => {
+export const Home: React.FC = () => {
     let navigate = useNavigate();
     return(
         <>

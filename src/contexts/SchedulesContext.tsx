@@ -1,23 +1,11 @@
 import { showNotification } from "@mantine/notifications";
-import { createContext, ReactNode, useCallback, useEffect, useState } from "react";
-import { CreateFormValues, ISchedule, UpdateFormValues } from "../common/dto";
+import { createContext, useCallback, useEffect, useState } from "react";
+import { ContextStorageProps, CreateFormValues, ISchedule, ISchedulesContextProps, UpdateFormValues } from "../common/dto";
 import { api } from "../services/api";
 
-interface childrenProps {
-    schedules: ISchedule[],
-    setSchedules: React.Dispatch<React.SetStateAction<ISchedule[]>>,
-    putVaccineSchedule: (id: string, { name, born_date, vaccination_date, vaccinated, conclusion }: UpdateFormValues) => Promise<void>;
-    postVaccineSchedule: ({ name, born_date, vaccination_date }: CreateFormValues) => Promise<void>;
-    deleteVaccineSchedule: (id: string) => Promise<void>;
-    getVaccineSchedules: () => Promise<void>
-}
+export const SchedulesContext = createContext<ISchedulesContextProps>({} as ISchedulesContextProps);
 
-export const SchedulesContext = createContext<childrenProps>({} as childrenProps);
-
-interface ProviderProps {
-    children: ReactNode;
-}
-export const ContextStorage: React.FC<ProviderProps> = ({children}) => {
+export const ContextStorage: React.FC<ContextStorageProps> = ({children}) => {
     const [schedules, setSchedules] = useState<ISchedule[]>([]);
 
     const getVaccineSchedules = useCallback(
@@ -26,11 +14,9 @@ export const ContextStorage: React.FC<ProviderProps> = ({children}) => {
           const json = data.data;
           localStorage.setItem("schedules",JSON.stringify(json))
           setSchedules(json) 
-          
         },
         [],
     )
-
     useEffect(() => {
         const updateList = async () => {
             const localData = localStorage.getItem("schedules");
@@ -40,10 +26,8 @@ export const ContextStorage: React.FC<ProviderProps> = ({children}) => {
                 setSchedules(JSON.parse(localData));
         }
         }
-        updateList();
-        
+        updateList();    
     },[getVaccineSchedules])
-
 
     const deleteVaccineSchedule = async (id: string) => {
         await api.delete(`/${id}`)
@@ -61,7 +45,6 @@ export const ContextStorage: React.FC<ProviderProps> = ({children}) => {
     }
 
     const putVaccineSchedule = async (id: string, {name, born_date, vaccination_date, vaccinated, conclusion }: UpdateFormValues) => {
-
         const config = { headers: {'Content-Type': 'application/json'} };
         if(!vaccinated && !conclusion) conclusion = "Ainda não vacinado."
         await api.put(`/${id}`,{

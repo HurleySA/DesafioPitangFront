@@ -1,12 +1,10 @@
 import { ScheduleTable } from "../../components/Table";
 import { Container } from "./style";
 
-export function Schedules(){
+export const Schedules: React.FC = () => {
     return (
         <Container >
             <ScheduleTable/>
         </Container>
-        
-
     )
 }
