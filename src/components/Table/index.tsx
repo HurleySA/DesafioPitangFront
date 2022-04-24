@@ -12,7 +12,7 @@ export const ScheduleTable: React.FC = () => {
     const [modalSchedule, setModalSchedule] = useState<ISchedule>({} as ISchedule); 
     const [modalOpened, setModalOpened] = useState(false);
 
-    const {deleteVaccineSchedule, schedules} = useContext(SchedulesContext);
+    const {getVaccineSchedules,deleteVaccineSchedule, schedules} = useContext(SchedulesContext);
     const handleDelete = async (id: string) => {
         await deleteVaccineSchedule(id)
     }
@@ -20,6 +20,18 @@ export const ScheduleTable: React.FC = () => {
         setModalOpened(true)
         setModalSchedule(schedule)
     }
+
+    // Está comentado, pois faz um refetch ao BD sempre que alguém em outro browser / acesso modificar ou criar um novo agendamento
+    //
+    // Como no desafio é informado sobre local storage, não teria lógica pegar o dato do BD sempre que recarregar a página, mas em compensação se outro navegador criar ou modificar 
+    // os dados não serão atualizados de forma instantanea
+    /* useEffect(() => {
+        const update = async () => {
+            getVaccineSchedules()
+        }
+        update()
+    }, [getVaccineSchedules]) */
+    
     return (
         <Container>
             <Table className="container">
