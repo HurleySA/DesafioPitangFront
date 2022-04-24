@@ -3,9 +3,9 @@ const today = new Date();
 today.setHours((today.getHours() - 3), today.getMinutes(), 0, 0)
 
 const UpdateSchema = Yup.object().shape({
-    name: Yup.string().nullable(true).min(5, "O nome precisa ter no minímo 5 caracteres."),
-    born_date: Yup.date().nullable(true).max(today, "Agendamento não disponivel para viajantes do tempo."),
-    vaccination_date: Yup.date().nullable(true).min(today, "Agendamento não disponivel para viajantes do tempo."),
+    name: Yup.string().min(5, "O nome precisa ter no minímo 5 caracteres."),
+    born_date: Yup.date().typeError("Digite uma nova data ou clique em reset.").max(today, "Agendamento não disponivel para viajantes do tempo."),
+    vaccination_date: Yup.date().typeError("Digite uma nova data ou clique em reset.").min(today, "Agendamento não disponivel para viajantes do tempo."),
     vaccinated: Yup.boolean().required(),
     conclusion: Yup.string().when("vaccinated",{
       is: true,
